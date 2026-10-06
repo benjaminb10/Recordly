@@ -136,6 +136,17 @@ export function EditorShell(props: Props) {
 		handleAutoSuggestZoomsConsumed,
 	} = editing;
 	const { dialogActions, status: exportStatus, exportMessage } = exportController;
+	// ⌘N / Ctrl+N : sauvegarde le projet et revient à la barre d'enregistrement pour filmer la suite.
+	useEffect(() => {
+		const onKeyDown = (event: KeyboardEvent) => {
+			if (event.key.toLowerCase() !== "n" || !(event.metaKey || event.ctrlKey) || event.shiftKey || event.altKey) return;
+			if (exportSession.isExporting) return;
+			event.preventDefault();
+			void openActions.handleReturnToRecording();
+		};
+		window.addEventListener("keydown", onKeyDown);
+		return () => window.removeEventListener("keydown", onKeyDown);
+	}, [exportSession.isExporting, openActions]);
 	const dashboardSettingsContent = useMemo(
 		() => (
 			<SettingsPanel
@@ -268,6 +279,9 @@ export function EditorShell(props: Props) {
 				canUndo={history.canUndo}
 				canRedo={history.canRedo}
 				handleOpenProjectBrowser={openActions.handleOpenProjectBrowser}
+				handleReturnToRecording={() => {
+					if (!exportSession.isExporting) void openActions.handleReturnToRecording();
+				}}
 				handleUndo={history.handleUndo}
 				handleRedo={history.handleRedo}
 				handleProjectNameSubmit={saveActions.handleProjectNameSubmit}

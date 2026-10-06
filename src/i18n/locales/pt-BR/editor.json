@@ -91,7 +91,6 @@
 		"solidColor": "Cor sólida (censura)",
 		"borderRadius": "Raio da borda"
 	},
-
 	"fontStyles": {
 		"classic": "Classic",
 		"editor": "Editor",
@@ -155,21 +154,32 @@
 	},
 	"actions": {
 		"saveAgain": "Salvar novamente",
-		"showInFolder": "Mostrar na pasta"
+		"showInFolder": "Mostrar na pasta",
+		"returnToRecording": "Voltar para a gravação",
+		"returnToRecordingBlockedByExport": "Aguarde a exportação terminar antes de voltar para a gravação"
 	},
 	"project": {
 		"untitled": "Sem título",
 		"unsavedChangesTitle": "Alterações não salvas",
 		"unsavedChangesDescription": "Salvar o projeto atual antes de {{action}}?",
 		"discardChanges": "Descartar alterações",
-		"saveProject": "Salvar projeto"
+		"saveProject": "Salvar projeto",
+		"menu": "Projeto",
+		"newRecording": "Nova gravação",
+		"newFromFile": "Novo projeto a partir de arquivo…",
+		"open": "Abrir projetos…",
+		"save": "Salvar projeto",
+		"saveAs": "Salvar projeto como…"
 	},
 	"exportTips": {
 		"autoZooms": "Dica: Desative os zooms aplicados automaticamente nas configurações",
 		"experimentalBuilds": "Dica: Ative o acesso a versões experimentais nas configurações",
 		"cursorAppearance": "Dica: Você pode personalizar a aparência do cursor"
 	},
-	"account": { "title": "Conta", "comingSoon": "Conta em breve" },
+	"account": {
+		"title": "Conta",
+		"comingSoon": "Conta em breve"
+	},
 	"nativeCaptureUnavailable": {
 		"title": "Nada está quebrado, mas não poderemos renderizar uma sobreposição animada do cursor.",
 		"description": "Seu dispositivo não oferece suporte à captura nativa. Isso pode acontecer por vários motivos que ainda não identificamos. O Recordly continuará funcionando, mas a suavização do cursor ficará indisponível.",

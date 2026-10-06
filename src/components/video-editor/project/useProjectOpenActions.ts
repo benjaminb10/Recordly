@@ -249,7 +249,14 @@ export function useProjectOpenActions({
 		[project, refreshProjectLibrary],
 	);
 
+	// Sauvegarde le projet si besoin, puis ferme l'éditeur et réaffiche la barre d'enregistrement.
+	const handleReturnToRecording = useCallback(async () => {
+		if (!(await confirmReplaceSourceWithUnsavedChanges("start a new recording"))) return;
+		await window.electronAPI.switchToRecording();
+	}, [confirmReplaceSourceWithUnsavedChanges]);
+
 	return {
+		handleReturnToRecording,
 		handleRenameLibraryProject,
 		handleOpenProjectFromLibrary,
 		handleImportMediaOrProject,

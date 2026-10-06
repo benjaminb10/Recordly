@@ -91,7 +91,6 @@
 		"solidColor": "Couleur unie (censure)",
 		"borderRadius": "Rayon de bordure"
 	},
-
 	"fontStyles": {
 		"classic": "Classique",
 		"editor": "Éditeur",
@@ -155,21 +154,32 @@
 	},
 	"actions": {
 		"saveAgain": "Enregistrer à nouveau",
-		"showInFolder": "Afficher dans le dossier"
+		"showInFolder": "Afficher dans le dossier",
+		"returnToRecording": "Retour à l'enregistrement",
+		"returnToRecordingBlockedByExport": "Attendez la fin de l'exportation avant de revenir à l'enregistrement"
 	},
 	"project": {
 		"untitled": "Sans titre",
 		"unsavedChangesTitle": "Modifications non enregistrées",
 		"unsavedChangesDescription": "Enregistrer le projet actuel avant de {{action}} ?",
 		"discardChanges": "Ignorer les modifications",
-		"saveProject": "Enregistrer le projet"
+		"saveProject": "Enregistrer le projet",
+		"menu": "Projet",
+		"newRecording": "Nouvel enregistrement",
+		"newFromFile": "Nouveau projet depuis un fichier…",
+		"open": "Ouvrir des projets…",
+		"save": "Enregistrer le projet",
+		"saveAs": "Enregistrer le projet sous…"
 	},
 	"exportTips": {
 		"autoZooms": "Astuce : Désactivez les zooms automatiques dans les paramètres",
 		"experimentalBuilds": "Astuce : Activez l’accès aux versions expérimentales dans les paramètres",
 		"cursorAppearance": "Astuce : Vous pouvez personnaliser l’apparence du curseur"
 	},
-	"account": { "title": "Compte", "comingSoon": "Compte bientôt disponible" },
+	"account": {
+		"title": "Compte",
+		"comingSoon": "Compte bientôt disponible"
+	},
 	"nativeCaptureUnavailable": {
 		"title": "Rien n'est cassé, mais nous ne pourrons pas afficher une superposition animée du curseur.",
 		"description": "Votre appareil ne prend pas en charge la capture native. Cela peut arriver pour plusieurs raisons que nous n'avons pas encore identifiées. Recordly continuera de fonctionner, mais le lissage du curseur sera impossible.",

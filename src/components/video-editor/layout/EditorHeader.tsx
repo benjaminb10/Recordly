@@ -3,6 +3,7 @@ import { Separator } from "@heroui/react";
 import {
 	House,
 	FilmStrip,
+	VideoCamera,
 	ArrowClockwise as Redo2,
 	ArrowCounterClockwise as Undo2,
 } from "@/components/ui/icons";
@@ -34,6 +35,7 @@ type Props = {
 	canUndo: boolean;
 	canRedo: boolean;
 	handleOpenProjectBrowser: () => void;
+	handleReturnToRecording: () => void;
 	handleUndo: () => void;
 	handleRedo: () => void;
 	handleProjectNameSubmit: (event?: FormEvent<HTMLFormElement>) => void;
@@ -72,6 +74,7 @@ export function EditorHeader(props: Props) {
 		canUndo,
 		canRedo,
 		handleOpenProjectBrowser,
+		handleReturnToRecording,
 		handleUndo,
 		handleRedo,
 		handleProjectNameSubmit,
@@ -122,6 +125,23 @@ export function EditorHeader(props: Props) {
 				>
 					<House weight="fill" className="h-4 w-4" />
 					<span>Home</span>
+				</Button>
+				<Button
+					type="button"
+					variant="ghost"
+					size="sm"
+					onClick={handleReturnToRecording}
+					disabled={exportSession.isExporting}
+					className="h-9 shrink-0 gap-2 px-3"
+					title={
+						exportSession.isExporting
+							? t("editor.actions.returnToRecordingBlockedByExport", "Wait for the export to finish")
+							: `${t("editor.project.newRecording", "New recording")} (⌘N)`
+					}
+					aria-label={t("editor.project.newRecording", "New recording")}
+				>
+					<VideoCamera weight="fill" className="h-4 w-4" />
+					<span>{t("editor.project.newRecording", "New recording")}</span>
 				</Button>
 				<span
 					aria-hidden="true"

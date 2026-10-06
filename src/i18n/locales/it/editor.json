@@ -91,7 +91,6 @@
 		"solidColor": "Colore pieno (Censura)",
 		"borderRadius": "Raggio bordo"
 	},
-
 	"fontStyles": {
 		"classic": "Classico",
 		"editor": "Editor",
@@ -155,21 +154,32 @@
 	},
 	"actions": {
 		"saveAgain": "Salva di nuovo",
-		"showInFolder": "Mostra nella cartella"
+		"showInFolder": "Mostra nella cartella",
+		"returnToRecording": "Torna alla registrazione",
+		"returnToRecordingBlockedByExport": "Attendi il termine dell'esportazione prima di tornare alla registrazione"
 	},
 	"project": {
 		"untitled": "Senza titolo",
 		"unsavedChangesTitle": "Modifiche non salvate",
 		"unsavedChangesDescription": "Salvare il progetto corrente prima di {{action}}?",
 		"discardChanges": "Ignora modifiche",
-		"saveProject": "Salva progetto"
+		"saveProject": "Salva progetto",
+		"menu": "Progetto",
+		"newRecording": "Nuova registrazione",
+		"newFromFile": "Nuovo progetto da file…",
+		"open": "Apri progetti…",
+		"save": "Salva progetto",
+		"saveAs": "Salva progetto con nome…"
 	},
 	"exportTips": {
 		"autoZooms": "Suggerimento: Disattiva gli zoom applicati automaticamente nelle impostazioni",
 		"experimentalBuilds": "Suggerimento: Attiva l’accesso alle build sperimentali nelle impostazioni",
 		"cursorAppearance": "Suggerimento: Puoi personalizzare l’aspetto del cursore"
 	},
-	"account": { "title": "Account", "comingSoon": "Account in arrivo" },
+	"account": {
+		"title": "Account",
+		"comingSoon": "Account in arrivo"
+	},
 	"nativeCaptureUnavailable": {
 		"title": "Niente è rotto, ma non sarà possibile renderizzare un overlay del cursore animato.",
 		"description": "Il tuo dispositivo non supporta la cattura nativa. Le cause possono essere varie e non ancora identificate. Recordly funziona comunque, ma non è possibile applicare lo smoothing del cursore.",
