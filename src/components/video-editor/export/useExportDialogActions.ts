@@ -17,7 +17,7 @@ type UseExportDialogActionsInput = {
 	session: ExportSession;
 	handleExport: (
 		settings: ExportSettings,
-		options?: { destination?: "download" | "share" },
+		options?: { destination?: "download" | "share" | "palmier" },
 	) => Promise<string | undefined>;
 	showExportSuccessToast: (filePath: string) => void;
 };
@@ -101,6 +101,15 @@ export function useExportDialogActions({
 		return handleExport(resolveShareExportSettings(resolvedSettings), { destination: "share" });
 	}, [resolveCurrentSettings, session, handleExport]);
 
+	const handleExportForPalmier = useCallback(() => {
+		const resolvedSettings = resolveCurrentSettings("mp4");
+		if (!resolvedSettings) return;
+		session.setExportError(null);
+		session.setExportedFilePath(undefined);
+		session.setShowExportDropdown(true);
+		void handleExport(resolvedSettings, { destination: "palmier" });
+	}, [resolveCurrentSettings, session, handleExport]);
+
 	const handleCancelExport = useCallback(() => {
 		if (!session.isExporting) return;
 		session.cancelledExportRunIdRef.current = session.exportRunIdRef.current;
@@ -180,6 +189,7 @@ export function useExportDialogActions({
 		handleOpenExportDropdown,
 		handleStartExportFromDropdown,
 		prepareExportForShare,
+		handleExportForPalmier,
 		handleCancelExport,
 		handleExportDropdownClose,
 		handleRetrySaveExport,

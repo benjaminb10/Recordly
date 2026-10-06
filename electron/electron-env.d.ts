@@ -240,6 +240,12 @@ interface Window {
 		showProjectDashboard: () => Promise<void>;
 		switchToEditor: () => Promise<void>;
 		switchToRecording: () => Promise<void>;
+		packageForPalmier: (input: {
+			screenTempPath: string;
+			webcamPath?: string | null;
+			webcamOffsetMs?: number;
+			name?: string;
+		}) => Promise<{ success: boolean; path?: string; message?: string }>;
 		openSourceSelector: () => Promise<void>;
 		selectSource: (source: ProcessedDesktopSource) => Promise<ProcessedDesktopSource>;
 		showSourceHighlight: (source: ProcessedDesktopSource) => Promise<{ success: boolean }>;

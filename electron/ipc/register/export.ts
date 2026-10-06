@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import type { Readable, Writable } from "node:stream";
 import type { SaveDialogOptions } from "electron";
-import { app, BrowserWindow, dialog, ipcMain } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import {
 	closeExportStream,
 	isOwnedExportPath,
@@ -246,7 +246,71 @@ function isTempPathSafe(tempPath: string): boolean {
 	return candidate.startsWith(withSep);
 }
 
+function runFfmpeg(args: string[]) {
+	return new Promise<void>((resolve, reject) => {
+		const child = spawn(getFfmpegBinaryPath(), ["-y", "-v", "error", ...args], { stdio: ["ignore", "ignore", "pipe"] });
+		let stderr = "";
+		child.stderr.on("data", (chunk) => {
+			stderr += String(chunk);
+		});
+		child.on("error", reject);
+		child.on("close", (code) => (code === 0 ? resolve() : reject(new Error(stderr.trim() || `ffmpeg ${code}`))));
+	});
+}
+
+const PALMIER_GUIDE = `# Projet pour Palmier Pro
+
+Exporté par Recordly (fork) : les pistes sont séparées et synchronisées, pour laisser l'IA de Palmier faire le montage.
+
+- screen.mp4 : l'écran stylé (zooms, curseur, cadre), sans la bulle webcam, avec le son.
+- webcam.mp4 : ta caméra brute, recalée sur screen.mp4 (même départ, même durée).
+- audio.m4a : le son seul.
+
+Aucune coupe ni accélération n'a été appliquée : c'est Palmier qui coupe.
+
+Exemple de demande à Claude dans Palmier :
+« Importe screen.mp4 et webcam.mp4 sur deux pistes synchronisées. Coupe les silences et les hésitations.
+Mets-moi en plein écran (webcam) pour l'intro, la conclusion et les moments où je parle sans rien montrer ;
+dès que je montre quelque chose à l'écran, passe en écran partagé avec ma webcam en bas à droite.
+Ajoute des sous-titres. »
+`;
+
 export function registerExportHandlers() {
+	// Fork : « Exporter pour Palmier ». L'écran stylé est déjà rendu (fichier temporaire) ; on le range avec la webcam
+	// recalée de timeOffsetMs (la webcam montre t - offset à l'instant t) et l'audio, dans Téléchargements.
+	ipcMain.handle(
+		"package-for-palmier",
+		async (
+			_event,
+			input: { screenTempPath: string; webcamPath?: string | null; webcamOffsetMs?: number; name?: string },
+		) => {
+			try {
+				const safeName = (input.name || `recordly-${Date.now()}`).replace(/[\\/:*?"<>|]+/g, "-").slice(0, 80);
+				const dir = path.join(app.getPath("downloads"), `${safeName} - Palmier`);
+				await fs.mkdir(dir, { recursive: true });
+				const screen = path.join(dir, "screen.mp4");
+				await fs.copyFile(input.screenTempPath, screen);
+				await fs.rm(input.screenTempPath, { force: true });
+				await runFfmpeg(["-i", screen, "-vn", "-c:a", "copy", path.join(dir, "audio.m4a")]).catch(() => undefined);
+				if (input.webcamPath) {
+					const offset = (input.webcamOffsetMs ?? 0) / 1000;
+					const align =
+						offset > 0
+							? ["-i", input.webcamPath, "-vf", `tpad=start_duration=${offset}:start_mode=clone`]
+							: offset < 0
+								? ["-ss", String(-offset), "-i", input.webcamPath]
+								: ["-i", input.webcamPath];
+					await runFfmpeg([...align, "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", path.join(dir, "webcam.mp4")]);
+				}
+				await fs.writeFile(path.join(dir, "PALMIER.md"), PALMIER_GUIDE);
+				shell.showItemInFolder(screen);
+				return { success: true, path: dir };
+			} catch (error) {
+				return { success: false, message: error instanceof Error ? error.message : String(error) };
+			}
+		},
+	);
+
 	ipcMain.handle(
 		"native-video-export-start",
 		async (

@@ -54,6 +54,7 @@ type Props = {
 	handleCancelExport: () => void;
 	handleRetrySaveExport: () => void;
 	handleStartExportFromDropdown: () => void;
+	handleExportForPalmier: () => void;
 	revealExportedFile: () => void;
 	exportMessage: string | null;
 	prepareExportForShare: () => Promise<string | undefined>;
@@ -258,6 +259,7 @@ export function EditorHeader(props: Props) {
 					handleCancelExport={handleCancelExport}
 					handleRetrySaveExport={handleRetrySaveExport}
 					handleStartExportFromDropdown={handleStartExportFromDropdown}
+					handleExportForPalmier={props.handleExportForPalmier}
 					revealExportedFile={revealExportedFile}
 					exportMessage={exportMessage}
 					projectPath={project.currentProjectPath}

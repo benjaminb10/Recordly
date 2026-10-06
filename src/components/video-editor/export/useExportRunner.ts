@@ -28,7 +28,7 @@ export function useExportRunner(input: ExportRunnerInput) {
 	const handleExport = useCallback(
 		async (
 			settings: ExportSettings,
-			options?: { destination?: "download" | "share" },
+			options?: { destination?: "download" | "share" | "palmier" },
 		): Promise<string | undefined> => {
 			const {
 				videoPath,
@@ -167,6 +167,25 @@ export function useExportRunner(input: ExportRunnerInput) {
 					if (result.success && result.blob) {
 						const timestamp = Date.now();
 						const fileName = `export-${timestamp}.gif`;
+						if (options?.destination === "palmier") {
+							const tempPath =
+								result.tempFilePath ??
+								(result.blob ? await streamExportBlobToTempFile(result.blob, "mp4") : undefined);
+							if (!tempPath) throw new Error("Could not prepare the video for Palmier.");
+							const packaged = await window.electronAPI.packageForPalmier({
+								screenTempPath: tempPath,
+								webcamPath: appearance.webcam.sourcePath ?? null,
+								webcamOffsetMs: appearance.webcam.timeOffsetMs ?? 0,
+								name: videoPath.split(/[\\/]/).pop()?.replace(/\.[^.]+$/, ""),
+							});
+							if (!packaged.success || !packaged.path) {
+								throw new Error(packaged.message || "Could not create the Palmier folder.");
+							}
+							setExportedFilePath(packaged.path);
+							toast.success("Prêt pour Palmier : dossier créé dans Téléchargements");
+							keepExportDialogOpen = true;
+							return packaged.path;
+						}
 						if (options?.destination === "share") {
 							const tempPath = await streamExportBlobToTempFile(result.blob, "gif");
 							if (!tempPath)
@@ -317,6 +336,14 @@ export function useExportRunner(input: ExportRunnerInput) {
 								setExportProgress(progress);
 							},
 						}),
+						...(options?.destination === "palmier"
+							? {
+									webcam: { ...appearance.webcam, enabled: false },
+									webcamUrl: null,
+									trimRegions: [],
+									speedRegions: [],
+								}
+							: {}),
 						audioRegions,
 						clipRegions,
 						sourceAudioFallbackPaths: audio.sourceAudioFallbackPaths,

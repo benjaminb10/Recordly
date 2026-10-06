@@ -32,6 +32,7 @@ type Props = {
 	handleCancelExport: () => void;
 	handleRetrySaveExport: () => void;
 	handleStartExportFromDropdown: () => void;
+	handleExportForPalmier: () => void;
 	revealExportedFile: () => void;
 	exportMessage: string | null;
 	projectTitle: string;
@@ -452,7 +453,25 @@ export function EditorExportMenu(props: Props) {
 										</div>
 									</Card>
 								) : (
-									<>{settingsForm}</>
+									<>
+										{settingsForm}
+										{destination === "local" ? (
+											<div className="border-t border-foreground/10 px-5 pb-5 pt-4">
+												<Button
+													type="button"
+													variant="outline"
+													onClick={props.handleExportForPalmier}
+													className="h-9 w-full text-xs"
+												>
+													Exporter pour Palmier
+												</Button>
+												<p className="mt-2 text-[11px] leading-relaxed text-muted-foreground/70">
+													Écran stylé sans bulle + webcam synchronisée + audio, en fichiers séparés,
+													sans coupes : le montage se fait dans Palmier Pro.
+												</p>
+											</div>
+										) : null}
+									</>
 								)}
 							</div>
 						</div>

@@ -523,6 +523,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	switchToEditor: () => {
 		return ipcRenderer.invoke("switch-to-editor");
 	},
+	packageForPalmier: (input: { screenTempPath: string; webcamPath?: string | null; webcamOffsetMs?: number; name?: string }) => {
+		return ipcRenderer.invoke("package-for-palmier", input);
+	},
 	switchToRecording: () => {
 		return ipcRenderer.invoke("switch-to-recording");
 	},

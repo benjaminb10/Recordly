@@ -300,6 +300,7 @@ export function EditorShell(props: Props) {
 				handleCancelExport={dialogActions.handleCancelExport}
 				handleRetrySaveExport={dialogActions.handleRetrySaveExport}
 				handleStartExportFromDropdown={dialogActions.handleStartExportFromDropdown}
+				handleExportForPalmier={dialogActions.handleExportForPalmier}
 				prepareExportForShare={dialogActions.prepareExportForShare}
 				onRequestShareSignIn={() => requestSignIn("share")}
 				shareRequestNonce={shareRequestNonce}
